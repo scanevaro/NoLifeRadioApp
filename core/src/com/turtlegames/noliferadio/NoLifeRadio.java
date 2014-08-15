@@ -24,6 +24,7 @@ public class NoLifeRadio extends ApplicationAdapter
 		stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 
+		//UITest on LibGDX Tests
 		buttonPlay = new ImageButton((Drawable) Gdx.files.internal("data/play.png"));
 		//		buttonPlay.setWidth(64f);
 		//		buttonPlay.setHeight(64f);
