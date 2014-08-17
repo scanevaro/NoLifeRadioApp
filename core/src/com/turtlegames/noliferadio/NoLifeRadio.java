@@ -72,7 +72,7 @@ public class NoLifeRadio extends ApplicationAdapter implements Runnable {
 
     @Override
     public void dispose() {
-        runnable.stop();
+        mediaPlayerThread.stop();
     }
 
     private class MediaPlayerThread implements Runnable {
