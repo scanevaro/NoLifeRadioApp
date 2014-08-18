@@ -10,16 +10,25 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 
-public class NoLifeRadio extends ApplicationAdapter implements Runnable {
+import javax.media.CannotRealizeException;
+import javax.media.Manager;
+import javax.media.NoPlayerException;
+import javax.media.Player;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+
+public class NoLifeRadio extends ApplicationAdapter {
     private SpriteBatch spriteBatch;
     private Stage stage;
     private TextButton buttonPlay;
     private Skin skin;
-    private MediaPlayer mediaPlayer;
-    private MediaPlayerThread mediaPlayerThread;
+    private Player mediaPlayer;
+    private MediaPlayerThread mediaPlayerRunnable;
+    private Thread mediaPlayerThread;
+    private String mediaURL;
 
     @Override
     public void create() {
@@ -35,9 +44,10 @@ public class NoLifeRadio extends ApplicationAdapter implements Runnable {
         buttonPlay.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (mediaPlayerThread == null) {
-                    mediaPlayerThread = new MediaPlayerThread();
-                    new Thread(mediaPlayerThread).start();
+                if (mediaPlayerRunnable == null) {
+                    mediaPlayerRunnable = new MediaPlayerThread();
+                    mediaPlayerThread = new Thread(mediaPlayerRunnable);
+                    mediaPlayerThread.start();
                 }
             }
         });
@@ -58,28 +68,30 @@ public class NoLifeRadio extends ApplicationAdapter implements Runnable {
     }
 
     @Override
-    public void run() {
-        if (mediaPlayer == null) {
-            mediaPlayer = new MediaPlayer(new Media("http://radio.nolife-radio.com:8000"));
-        }
-    }
-
-    @Override
-    public void stop() {
-        if (mediaPlayer.isPlaying())
-            mediaPlayer.stop();
-    }
-
-    @Override
     public void dispose() {
-        mediaPlayerThread.stop();
+        mediaPlayerThread.interrupt();
     }
 
     private class MediaPlayerThread implements Runnable {
         @Override
         public void run() {
-            if (mediaPlayer == null)
-                mediaPlayer.play();
+            URL mediaURL = null;
+            try {
+                mediaURL = new URL("http://radio.nolife-radio.com:9000/stream");
+                mediaPlayer = Manager.createRealizedPlayer(mediaURL);
+                mediaPlayer.start();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (NoPlayerException e) {
+                e.printStackTrace();
+            } catch (CannotRealizeException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
     }
 }
