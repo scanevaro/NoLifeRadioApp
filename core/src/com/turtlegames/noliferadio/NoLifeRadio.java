@@ -10,14 +10,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
+import javazoom.jl.player.advanced.AdvancedPlayer;
 
-import javax.media.CannotRealizeException;
-import javax.media.Manager;
-import javax.media.NoPlayerException;
-import javax.media.Player;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 
 public class NoLifeRadio extends ApplicationAdapter {
@@ -25,10 +23,10 @@ public class NoLifeRadio extends ApplicationAdapter {
     private Stage stage;
     private TextButton buttonPlay;
     private Skin skin;
-    private Player mediaPlayer;
     private MediaPlayerThread mediaPlayerRunnable;
     private Thread mediaPlayerThread;
-    private String mediaURL;
+
+    private Player player;
 
     @Override
     public void create() {
@@ -75,23 +73,14 @@ public class NoLifeRadio extends ApplicationAdapter {
     private class MediaPlayerThread implements Runnable {
         @Override
         public void run() {
-            URL mediaURL = null;
+            //"http://radio.nolife-radio.com:9000/stream"
             try {
-                mediaURL = new URL("http://radio.nolife-radio.com:9000/stream");
-                mediaPlayer = Manager.createRealizedPlayer(mediaURL);
-                mediaPlayer.start();
-            } catch (MalformedURLException e) {
+
+            } catch (JavaLayerException e) {
                 e.printStackTrace();
-            } catch (NoPlayerException e) {
-                e.printStackTrace();
-            } catch (CannotRealizeException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (Exception e) {
+            } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-
         }
     }
 }
