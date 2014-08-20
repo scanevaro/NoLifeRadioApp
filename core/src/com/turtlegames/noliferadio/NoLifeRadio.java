@@ -82,6 +82,7 @@ public class NoLifeRadio extends ApplicationAdapter
 			//"http://radio.nolife-radio.com:9000/stream"
 			try
 			{
+				//TODO probably dont need this thread
 				basicPlayer = new BasicPlayer();
 				basicPlayer.open(new URL("http://radio.nolife-radio.com:9000/stream"));
 				basicPlayer.play();
