@@ -68,7 +68,8 @@ public class NoLifeRadio extends ApplicationAdapter {
     private class MediaPlayerThread implements Runnable {
         @Override
         public void run() {
-            player.play();
+			String url = "http://radio.nolife-radio.com:9000/stream";
+            player.play(url);
         }
     }
 }

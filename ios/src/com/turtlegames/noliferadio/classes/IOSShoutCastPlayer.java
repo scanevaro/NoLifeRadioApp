@@ -1,21 +1,32 @@
 package com.turtlegames.noliferadio.classes;
 
 import com.turtlegames.noliferadio.interfaces.Player;
+import org.robovm.apple.foundation.NSURL;
+import org.robovm.apple.mediaplayer.MPMoviePlayerController;
 import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
+import org.robovm.apple.mediaplayer.MPMovieSourceType;
 
 /**
  * Created by scanevaro on 23/08/2014.
  */
-public class IOSShoutCastPlayer implements Player {
+public class IOSShoutCastPlayer implements Player
+{
+	private MPMoviePlayerController player;
 
-    private MPMoviePlayerViewController playerViewController;
+	public IOSShoutCastPlayer()
+	{
+		player = new MPMoviePlayerViewController().getMoviePlayer();
+	}
 
-    public IOSShoutCastPlayer(){
-        playerViewController = new MPMoviePlayerViewController();
-    }
+	@Override
+	public void play(String url)
+	{
+		player.setMovieSourceType(MPMovieSourceType.Streaming);
 
-    @Override
-    public void play() {
+		player.setContentURL(new NSURL(url));
 
-    }
+		player.prepareToPlay();
+
+		player.play();
+	}
 }

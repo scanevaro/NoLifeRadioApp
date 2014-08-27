@@ -10,42 +10,58 @@ import java.io.IOException;
 /**
  * Created by scanevaro on 22/08/2014.
  */
-public class AndroidSHOUTCastPlayer implements Player {
+public class AndroidSHOUTCastPlayer implements Player
+{
 
-    MediaPlayer mediaPlayer;
+	MediaPlayer mediaPlayer;
 
-    public AndroidSHOUTCastPlayer() {
-        mediaPlayer = new MediaPlayer();
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+	public AndroidSHOUTCastPlayer()
+	{
+		mediaPlayer = new MediaPlayer();
+		mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 
-        try {
-            mediaPlayer.setDataSource("http://radio.nolife-radio.com:9000/stream");
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+	}
 
-        mediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
-            public void onBufferingUpdate(MediaPlayer mp, int percent) {
-                Log.i("Buffering", "" + percent);
-            }
-        });
-    }
+	@Override
+	public void play(String url)
+	{
+		if (!mediaPlayer.isPlaying())
+		{
+			try
+			{
+				mediaPlayer.setDataSource(url);
+			}
+			catch (IllegalArgumentException e)
+			{
+				e.printStackTrace();
+			}
+			catch (IllegalStateException e)
+			{
+				e.printStackTrace();
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
 
-    @Override
-    public void play() {
-        if (!mediaPlayer.isPlaying()) {
-            mediaPlayer.prepareAsync();
+			mediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener()
+			{
+				public void onBufferingUpdate(MediaPlayer mp, int percent)
+				{
+					Log.i("Buffering", "" + percent);
+				}
+			});
 
-            mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+			mediaPlayer.prepareAsync();
 
-                public void onPrepared(MediaPlayer mp) {
-                    mp.start();
-                }
-            });
-        }
-    }
+			mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener()
+			{
+
+				public void onPrepared(MediaPlayer mp)
+				{
+					mp.start();
+				}
+			});
+		}
+	}
 }
