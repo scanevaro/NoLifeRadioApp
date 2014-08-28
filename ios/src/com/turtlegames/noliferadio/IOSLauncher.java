@@ -6,13 +6,12 @@ import org.robovm.apple.uikit.UIApplication;
 
 import com.badlogic.gdx.backends.iosrobovm.IOSApplication;
 import com.badlogic.gdx.backends.iosrobovm.IOSApplicationConfiguration;
-import com.turtlegames.noliferadio.NoLifeRadio;
 
 public class IOSLauncher extends IOSApplication.Delegate {
     @Override
     protected IOSApplication createApplication() {
         IOSApplicationConfiguration config = new IOSApplicationConfiguration();
-        return new IOSApplication(new NoLifeRadio(new IOSShoutCastPlayer), config);
+        return new IOSApplication(new NoLifeRadio(new IOSShoutCastPlayer()), config);
     }
 
     public static void main(String[] argv) {

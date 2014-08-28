@@ -2,6 +2,7 @@ package com.turtlegames.noliferadio;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -37,11 +38,13 @@ public class NoLifeRadio extends ApplicationAdapter {
         buttonPlay.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (mediaPlayerRunnable == null) {
-                    mediaPlayerRunnable = new MediaPlayerThread();
-                    mediaPlayerThread = new Thread(mediaPlayerRunnable);
-                    mediaPlayerThread.start();
-                }
+                //if (mediaPlayerRunnable == null) {
+                //    mediaPlayerRunnable = new MediaPlayerThread();
+                //    mediaPlayerThread = new Thread(mediaPlayerRunnable);
+                //    mediaPlayerThread.start();
+                //}
+                String url = "http://radio.nolife-radio.com:9000/stream";
+                player.play(url);
             }
         });
 

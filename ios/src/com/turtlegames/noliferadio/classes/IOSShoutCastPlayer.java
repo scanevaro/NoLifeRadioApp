@@ -25,7 +25,7 @@ public class IOSShoutCastPlayer implements Player
 
 		player.setContentURL(new NSURL(url));
 
-		player.prepareToPlay();
+        player.setShouldAutoplay(true);
 
 		player.play();
 	}
