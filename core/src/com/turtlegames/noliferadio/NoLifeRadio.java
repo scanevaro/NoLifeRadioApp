@@ -37,7 +37,6 @@ public class NoLifeRadio extends ApplicationAdapter
 		stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 
-		//TODO Check UITest on LibGDX Tests for button with Image
 		Texture playTexture = new Texture(Gdx.files.internal("data/play.png"));
 		Texture stopTexture = new Texture(Gdx.files.internal("data/stop.png"));
 
@@ -55,6 +54,7 @@ public class NoLifeRadio extends ApplicationAdapter
 			@Override
 			public void clicked(InputEvent event, float x, float y)
 			{
+				//TODO desktop play not working
 				String url = "http://radio.nolife-radio.com:9000/stream";
 				player.play(url);
 			}
