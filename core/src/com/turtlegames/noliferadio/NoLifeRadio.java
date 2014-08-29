@@ -16,66 +16,63 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.turtlegames.noliferadio.interfaces.Player;
 
-public class NoLifeRadio extends ApplicationAdapter {
-    private SpriteBatch spriteBatch;
-    private Stage stage;
-    private ImageButton buttonPlay;
-    private Skin skin;
-    private Player player;
+public class NoLifeRadio extends ApplicationAdapter
+{
+	private SpriteBatch spriteBatch;
+	private Stage stage;
+	private ImageButton buttonPlay;
+	private Skin skin;
+	private Player player;
 
-    public NoLifeRadio(Player player) {
-        if (player != null)
-            this.player = player;
-    }
+	public NoLifeRadio(Player player)
+	{
+		if (player != null)
+			this.player = player;
+	}
 
-    @Override
-    public void create() {
-        spriteBatch = new SpriteBatch();
-        stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
-        skin = new Skin(Gdx.files.internal("data/uiskin.json"));
+	@Override
+	public void create()
+	{
+		spriteBatch = new SpriteBatch();
+		stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 
-        //TODO Check UITest on LibGDX Tests for button with Image
-        Texture playTexture = new Texture(Gdx.files.internal("data/play.png"));
+		//TODO Check UITest on LibGDX Tests for button with Image
+		Texture playTexture = new Texture(Gdx.files.internal("data/play.png"));
+		Texture stopTexture = new Texture(Gdx.files.internal("data/stop.png"));
 
-        //TODO stop button
-        Texture stopTexture = new Texture(Gdx.files.internal("data/stop.png"));
+		TextureRegion playTexReg = new TextureRegion(playTexture);
+		TextureRegion stopTexReg = new TextureRegion(stopTexture);
 
-        TextureRegion playTexReg = new TextureRegion(playTexture);
-        TextureRegion stopTexReg = new TextureRegion(stopTexture);
+		ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle(skin.get(Button.ButtonStyle.class));
+		style.imageUp = new TextureRegionDrawable(playTexReg);
+		style.imageChecked = new TextureRegionDrawable(stopTexReg);
 
-        ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle(skin.get(Button.ButtonStyle.class));
-        style.imageUp = new TextureRegionDrawable(playTexReg);
-        style.imageDisabled = new TextureRegionDrawable(stopTexReg);
+		buttonPlay = new ImageButton(style);
+		buttonPlay.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+		buttonPlay.addListener(new ClickListener()
+		{
+			@Override
+			public void clicked(InputEvent event, float x, float y)
+			{
+				String url = "http://radio.nolife-radio.com:9000/stream";
+				player.play(url);
+			}
+		});
 
-        buttonPlay = new ImageButton(style);
-        buttonPlay.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
-        buttonPlay.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                buttonPlay.setChecked(true);
+		stage.addActor(buttonPlay);
 
-                String url = "http://radio.nolife-radio.com:9000/stream";
-                player.play(url);
-            }
-        });
+		Gdx.input.setInputProcessor(stage);
+	}
 
-        stage.addActor(buttonPlay);
+	@Override
+	public void render()
+	{
+		Gdx.gl.glClearColor(1, 1, 1, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        Gdx.input.setInputProcessor(stage);
-    }
-
-    @Override
-    public void render() {
-        Gdx.gl.glClearColor(1, 1, 1, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        spriteBatch.begin();
-        stage.draw();
-        spriteBatch.end();
-    }
-
-    @Override
-    public void dispose() {
-        mediaPlayerThread.interrupt();
-    }
+		spriteBatch.begin();
+		stage.draw();
+		spriteBatch.end();
+	}
 }
