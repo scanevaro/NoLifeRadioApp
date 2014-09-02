@@ -14,156 +14,178 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.turtlegames.noliferadio.interfaces.Player;
 
-public class NoLifeRadio extends ApplicationAdapter {
-    private SpriteBatch spriteBatch;
-    private Stage stage;
-    private ImageButton buttonPlay;
-    private Skin skin;
-    private Player player;
+public class NoLifeRadio extends ApplicationAdapter
+{
+	private SpriteBatch spriteBatch;
+	private Stage stage;
+	private ImageButton buttonPlay;
+	private Skin skin;
+	private Player player;
 
-    private Table table;
+	private Table table;
 
-    public NoLifeRadio(Player player) {
-        if (player != null)
-            this.player = player;
-    }
+	public NoLifeRadio(Player player)
+	{
+		if (player != null)
+			this.player = player;
+	}
 
-    @Override
-    public void create() {
-        spriteBatch = new SpriteBatch();
-        stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
-        skin = new Skin(Gdx.files.internal("data/uiskin.json"));
+	@Override
+	public void create()
+	{
+		spriteBatch = new SpriteBatch();
+		stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 
-        Gdx.input.setInputProcessor(stage);
+		Gdx.input.setInputProcessor(stage);
 
-        table = new Table();
-        table.setFillParent(true);
-        stage.addActor(table);
+		table = new Table();
+		table.setFillParent(true);
+		stage.addActor(table);
 
-        prepareTitle();
+		prepareTitle();
 
-        prepareTree();
-    }
+		prepareTree();
+	}
 
-    @Override
-    public void render() {
-        Gdx.gl.glClearColor(1, 1, 1, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+	@Override
+	public void render()
+	{
+		Gdx.gl.glClearColor(1, 1, 1, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        spriteBatch.begin();
-        stage.draw();
-        spriteBatch.end();
-    }
+		spriteBatch.begin();
 
-    private void prepareTitle() {
-        Image title1 = new Image(new Texture(Gdx.files.internal("data/title1.png")));
-//        title1.setPosition(0, Gdx.graphics.getHeight() - title1.getHeight());
-        table.add(title1);
+		stage.draw();
 
-        Image title2 = new Image(new Texture(Gdx.files.internal("data/title2.png")));
-//        title2.setPosition(Gdx.graphics.getWidth() - title2.getWidth(), Gdx.graphics.getHeight() - title2.getHeight());
-        table.add(title2);
-    }
+		table.debug();
 
-    private void prepareTree() {
+		spriteBatch.end();
+	}
 
+	private void prepareTitle()
+	{
+		Image title1 = new Image(new Texture(Gdx.files.internal("data/title1.png")));
+		//        title1.setPosition(0, Gdx.graphics.getHeight() - title1.getHeight());
+		table.add(title1);
 
-        final Tree tree = new Tree(skin);
+		Image title2 = new Image(new Texture(Gdx.files.internal("data/title2.png")));
+		//        title2.setPosition(Gdx.graphics.getWidth() - title2.getWidth(), Gdx.graphics.getHeight() - title2.getHeight());
+		table.add(title2);
 
-//       setPlayerNode
-//        ImageButton.ImageButtonStyle playerStyle = new ImageButton.ImageButtonStyle(skin.get(Button.ButtonStyle.class));
-//        playerStyle.imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("data/nowPlayingFolded.png"))));
-//        playerStyle.imageChecked = new TextureRegionDrawable(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("data/nowPlayingUnFolded.png")))));
-        final Tree.Node playerNode = new Tree.Node(new TextButton("Player", skin));
+		table.row();
+	}
 
-        //set listener
-        playerNode.getActor().addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                if (!playerNode.isExpanded())
-                    playerNode.setExpanded(true);
-                else
-                    playerNode.setExpanded(false);
-            }
-        });
+	private void prepareTree()
+	{
 
-        tree.add(playerNode);
-        preparePlayButton();
-        playerNode.add(new Tree.Node(buttonPlay));
+		final Tree tree = new Tree(skin);
 
-        //button now playing
-        ImageButton.ImageButtonStyle nowPlayingStyle = new ImageButton.ImageButtonStyle(skin.get(Button.ButtonStyle.class));
-        nowPlayingStyle.imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("data/nowPlayingFolded.png"))));
-        nowPlayingStyle.imageChecked = new TextureRegionDrawable(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("data/nowPlayingUnFolded.png")))));
-        final Tree.Node nowPlayingNode = new Tree.Node(new ImageButton(nowPlayingStyle));
+		//       setPlayerNode
+		//        ImageButton.ImageButtonStyle playerStyle = new ImageButton.ImageButtonStyle(skin.get(Button.ButtonStyle.class));
+		//        playerStyle.imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("data/nowPlayingFolded.png"))));
+		//        playerStyle.imageChecked = new TextureRegionDrawable(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("data/nowPlayingUnFolded.png")))));
+		final Tree.Node playerNode = new Tree.Node(new TextButton("Player", skin));
 
-        //set listener
-        nowPlayingNode.getActor().addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                if (!nowPlayingNode.isExpanded())
-                    nowPlayingNode.setExpanded(true);
-                else
-                    nowPlayingNode.setExpanded(false);
-            }
-        });
+		//set listener
+		playerNode.getActor().addListener(new ClickListener()
+		{
+			public void clicked(InputEvent event, float x, float y)
+			{
+				if (!playerNode.isExpanded())
+					playerNode.setExpanded(true);
+				else
+					playerNode.setExpanded(false);
+			}
+		});
 
-        ImageButton.ImageButtonStyle chatStyle = new ImageButton.ImageButtonStyle(skin.get(Button.ButtonStyle.class));
-        chatStyle.imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("data/chatFolded.png"))));
-        chatStyle.imageChecked = new TextureRegionDrawable(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("data/chatUnFolded.png")))));
-        final Tree.Node chatNode = new Tree.Node(new ImageButton(chatStyle));
+		tree.add(playerNode);
+		preparePlayButton();
+		playerNode.add(new Tree.Node(buttonPlay));
 
-        chatNode.getActor().addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                if (!chatNode.isExpanded())
-                    chatNode.setExpanded(true);
-                else
-                    chatNode.setExpanded(false);
-            }
-        });
+		//button now playing
+		ImageButton.ImageButtonStyle nowPlayingStyle = new ImageButton.ImageButtonStyle(skin.get(Button.ButtonStyle.class));
+		nowPlayingStyle.imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("data/nowPlayingFolded.png"))));
+		nowPlayingStyle.imageChecked = new TextureRegionDrawable(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("data/nowPlayingUnFolded.png")))));
+		final Tree.Node nowPlayingNode = new Tree.Node(new ImageButton(nowPlayingStyle));
 
-        ImageButton.ImageButtonStyle aboutStyle = new ImageButton.ImageButtonStyle(skin.get(Button.ButtonStyle.class));
-        aboutStyle.imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("data/aboutFolded.png"))));
-        aboutStyle.imageChecked = new TextureRegionDrawable(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("data/aboutUnFolded.png")))));
-        final Tree.Node aboutNode = new Tree.Node(new ImageButton(aboutStyle));
+		//set listener
+		nowPlayingNode.getActor().addListener(new ClickListener()
+		{
+			public void clicked(InputEvent event, float x, float y)
+			{
+				if (!nowPlayingNode.isExpanded())
+					nowPlayingNode.setExpanded(true);
+				else
+					nowPlayingNode.setExpanded(false);
+			}
+		});
 
-        aboutNode.getActor().addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                if (!aboutNode.isExpanded())
-                    aboutNode.setExpanded(true);
-                else
-                    aboutNode.setExpanded(false);
-            }
-        });
+		ImageButton.ImageButtonStyle chatStyle = new ImageButton.ImageButtonStyle(skin.get(Button.ButtonStyle.class));
+		chatStyle.imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("data/chatFolded.png"))));
+		chatStyle.imageChecked = new TextureRegionDrawable(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("data/chatUnFolded.png")))));
+		final Tree.Node chatNode = new Tree.Node(new ImageButton(chatStyle));
 
-        final Tree.Node moo4 = new Tree.Node(new TextButton("moo4", skin));
+		chatNode.getActor().addListener(new ClickListener()
+		{
+			public void clicked(InputEvent event, float x, float y)
+			{
+				if (!chatNode.isExpanded())
+					chatNode.setExpanded(true);
+				else
+					chatNode.setExpanded(false);
+			}
+		});
 
-        tree.add(nowPlayingNode);
-        tree.add(chatNode);
-        tree.add(aboutNode);
-        chatNode.add(moo4);
+		ImageButton.ImageButtonStyle aboutStyle = new ImageButton.ImageButtonStyle(skin.get(Button.ButtonStyle.class));
+		aboutStyle.imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("data/aboutFolded.png"))));
+		aboutStyle.imageChecked = new TextureRegionDrawable(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("data/aboutUnFolded.png")))));
+		final Tree.Node aboutNode = new Tree.Node(new ImageButton(aboutStyle));
 
-        table.add(tree).fill().expand();
-    }
+		aboutNode.getActor().addListener(new ClickListener()
+		{
+			public void clicked(InputEvent event, float x, float y)
+			{
+				if (!aboutNode.isExpanded())
+					aboutNode.setExpanded(true);
+				else
+					aboutNode.setExpanded(false);
+			}
+		});
 
-    private void preparePlayButton() {
-        Texture playTexture = new Texture(Gdx.files.internal("data/play.png"));
-        Texture stopTexture = new Texture(Gdx.files.internal("data/stop.png"));
+		final Tree.Node moo4 = new Tree.Node(new TextButton("moo4", skin));
 
-        TextureRegion playTexReg = new TextureRegion(playTexture);
-        TextureRegion stopTexReg = new TextureRegion(stopTexture);
+		tree.add(nowPlayingNode);
+		tree.add(chatNode);
+		tree.add(aboutNode);
+		chatNode.add(moo4);
 
-        ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle(skin.get(Button.ButtonStyle.class));
-        style.imageUp = new TextureRegionDrawable(playTexReg);
-        style.imageChecked = new TextureRegionDrawable(stopTexReg);
+		table.add(tree).fill().expand();
+	}
 
-        buttonPlay = new ImageButton(style);
-        buttonPlay.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
-        buttonPlay.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                //TODO desktop play not working
-                String url = "http://radio.nolife-radio.com:9000/stream";
-                player.play(url);
-            }
-        });
-    }
+	private void preparePlayButton()
+	{
+		Texture playTexture = new Texture(Gdx.files.internal("data/play.png"));
+		Texture stopTexture = new Texture(Gdx.files.internal("data/stop.png"));
+
+		TextureRegion playTexReg = new TextureRegion(playTexture);
+		TextureRegion stopTexReg = new TextureRegion(stopTexture);
+
+		ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle(skin.get(Button.ButtonStyle.class));
+		style.imageUp = new TextureRegionDrawable(playTexReg);
+		style.imageChecked = new TextureRegionDrawable(stopTexReg);
+
+		buttonPlay = new ImageButton(style);
+		buttonPlay.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+		buttonPlay.addListener(new ClickListener()
+		{
+			@Override
+			public void clicked(InputEvent event, float x, float y)
+			{
+				//TODO desktop play not working
+				String url = "http://radio.nolife-radio.com:9000/stream";
+				player.play(url);
+			}
+		});
+	}
 }
