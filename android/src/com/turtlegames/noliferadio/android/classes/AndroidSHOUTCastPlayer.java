@@ -2,7 +2,8 @@ package com.turtlegames.noliferadio.android.classes;
 
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.util.Log;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.turtlegames.noliferadio.interfaces.Player;
 
 import java.io.IOException;
@@ -12,18 +13,16 @@ import java.io.IOException;
  */
 public class AndroidSHOUTCastPlayer implements Player
 {
-
 	MediaPlayer mediaPlayer;
 
 	public AndroidSHOUTCastPlayer()
 	{
 		mediaPlayer = new MediaPlayer();
 		mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-
 	}
 
 	@Override
-	public void play(String url)
+	public void play(String url, final Label state)
 	{
 		if (!mediaPlayer.isPlaying())
 		{
@@ -48,11 +47,14 @@ public class AndroidSHOUTCastPlayer implements Player
 			{
 				public void onBufferingUpdate(MediaPlayer mp, int percent)
 				{
-					Log.i("Buffering", "" + percent);
+					state.setText("Buffering..");
+					mediaPlayer.setOnBufferingUpdateListener(null);
 				}
 			});
 
 			mediaPlayer.prepareAsync();
+			state.setText("Buffering..");
+			state.setColor(Color.YELLOW);
 
 			mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener()
 			{
@@ -60,8 +62,15 @@ public class AndroidSHOUTCastPlayer implements Player
 				public void onPrepared(MediaPlayer mp)
 				{
 					mp.start();
+					state.setText("Playing");
+					state.setColor(Color.GREEN);
 				}
 			});
 		}
+	}
+
+	public MediaPlayer.TrackInfo[] getTrackInfo()
+	{
+		return null;
 	}
 }

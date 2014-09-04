@@ -22,7 +22,7 @@ public class NoLifeRadio extends ApplicationAdapter
 	private ImageButton buttonPlay;
 	private Skin skin;
 	private Player player;
-
+	private Label state;
 	private Table table;
 
 	private ClickListener cickListener;
@@ -49,7 +49,7 @@ public class NoLifeRadio extends ApplicationAdapter
 
 		prepareTitle();
 		preparePlayButton();
-		//		prepareTree();
+		prepareTree();
 	}
 
 	@Override
@@ -62,7 +62,7 @@ public class NoLifeRadio extends ApplicationAdapter
 
 		stage.draw();
 
-		//		table.debug();
+		table.debug();
 
 		spriteBatch.end();
 	}
@@ -97,13 +97,14 @@ public class NoLifeRadio extends ApplicationAdapter
 			{
 				//TODO desktop play not working
 				String url = "http://radio.nolife-radio.com:9000/stream";
-				player.play(url);
+				player.play(url, state);
 			}
 		});
 
 		Table _table = new Table(skin);
 		_table.add(buttonPlay);
-		_table.add(new Label("Status: ", skin), new Label("...IDLE...", skin));
+		state = new Label("...IDLE...", skin);
+		_table.add(new Label("Status: ", skin), state);
 		table.add(_table).align(Align.left);
 		table.add();
 		table.row();
