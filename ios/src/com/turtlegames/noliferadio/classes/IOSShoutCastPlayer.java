@@ -12,14 +12,12 @@ import org.robovm.apple.mediaplayer.MPMovieSourceType;
 /**
  * Created by scanevaro on 23/08/2014.
  */
-public class IOSShoutCastPlayer implements Player, Runnable {
+public class IOSShoutCastPlayer implements Player {
     private MPMoviePlayerController player;
-    private MPMoviePlaybackState listener;
     private Label status;
 
     public IOSShoutCastPlayer() {
         player = new MPMoviePlayerViewController().getMoviePlayer();
-        listener = player.getPlaybackState();
     }
 
     @Override
@@ -33,15 +31,5 @@ public class IOSShoutCastPlayer implements Player, Runnable {
         player.setShouldAutoplay(true);
 
         player.play();
-    }
-
-    @Override
-    public void run() {
-        while (true) {
-            if (listener.value() == MPMoviePlaybackState.Playing.ordinal()) {
-                status.setText("Playing");
-                status.setColor(Color.GREEN);
-            }
-        }
     }
 }
