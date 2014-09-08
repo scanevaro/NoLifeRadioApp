@@ -58,16 +58,16 @@ public class NoLifeRadio extends ApplicationAdapter {
 
         stage.draw();
 
-        table.debug();
+        //table.debug();
 
         spriteBatch.end();
     }
 
     private void prepareTitle() {
-        table.add(new Image(new Texture(Gdx.files.internal("data/title1.png"))));
-        table.add(new Image(new Texture(Gdx.files.internal("data/title2.png"))));
+        table.add(new Image(new Texture(Gdx.files.internal("data/title1.png")))).align(Align.left);
+        table.add(new Image(new Texture(Gdx.files.internal("data/title2.png")))).align(Align.right);
 
-        table.row().spaceBottom(50);
+        table.row().spaceBottom(20).spaceTop(20);
     }
 
     private void preparePlayButton() {

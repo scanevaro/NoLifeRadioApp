@@ -72,7 +72,7 @@ public class IOSShoutCastPlayer implements Player {
 
         player.play();
 
-        status.setText("Playing");
-        status.setColor(Color.GREEN);
+        //status.setText("Playing");
+        //status.setColor(Color.GREEN);
     }
 }
