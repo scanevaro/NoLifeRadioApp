@@ -88,7 +88,7 @@ public class NoLifeRadio extends ApplicationAdapter {
             public void clicked(InputEvent event, float x, float y) {
                 //TODO desktop play not working
                 String url = "http://radio.nolife-radio.com:9000/stream";
-                player.play(url, state);
+                player.play(url, state, songName);
             }
         });
 
