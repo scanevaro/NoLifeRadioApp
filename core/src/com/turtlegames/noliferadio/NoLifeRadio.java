@@ -22,6 +22,7 @@ public class NoLifeRadio extends ApplicationAdapter {
     private Skin skin;
     private Player player;
     private Label state;
+    private Label songName;
     private Table table;
 
     private ClickListener cickListener;
@@ -34,6 +35,8 @@ public class NoLifeRadio extends ApplicationAdapter {
     @Override
     public void create() {
         spriteBatch = new SpriteBatch();
+
+        //TODO TRATAR DE USAR STRETCHVIEWPORT PARA STAGE Y QUE MANTENGA EL TAMAÑO DE LOS WIDGETS
         stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 
@@ -47,6 +50,8 @@ public class NoLifeRadio extends ApplicationAdapter {
         prepareTitle();
         preparePlayButton();
         prepareTree();
+
+
     }
 
     @Override
@@ -149,9 +154,9 @@ public class NoLifeRadio extends ApplicationAdapter {
 
         final Tree.Node moo4 = new Tree.Node(new TextButton("moo4", skin));
 
-        tree.addListener(new ClickListener(){
+        tree.addListener(new ClickListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y){
+            public void clicked(InputEvent event, float x, float y) {
 
             }
         });
@@ -160,6 +165,10 @@ public class NoLifeRadio extends ApplicationAdapter {
         tree.add(chatNode);
         tree.add(aboutNode);
         chatNode.add(moo4);
+
+        songName = new Label("", skin);
+        final Tree.Node songNameNode = new Tree.Node(songName);
+        nowPlayingNode.add(songNameNode);
 
         table.add(tree).fill().expand().colspan(2);
     }

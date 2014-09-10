@@ -92,7 +92,7 @@ public class AndroidSHOUTCastPlayer implements Player {
 
                     //set song name in label
                     songName.setText(song);
-                    songName.setColor(Color.ORANGE);
+                    songName.setColor(new Color(50, 205, 50, 0.5f));
 
                     is.close();
                 } catch (MalformedURLException e) {
