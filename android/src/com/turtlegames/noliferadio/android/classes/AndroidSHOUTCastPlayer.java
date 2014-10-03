@@ -7,10 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.turtlegames.noliferadio.interfaces.Player;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 
 /**
  * Created by scanevaro on 22/08/2014.
@@ -25,7 +21,7 @@ public class AndroidSHOUTCastPlayer implements Player {
     }
 
     @Override
-    public void play(String url, final Label state, final Label songName) {
+    public void play(String url, final Label state) {
         if (!mediaPlayer.isPlaying()) {
             try {
                 mediaPlayer.setDataSource(url);
@@ -52,55 +48,8 @@ public class AndroidSHOUTCastPlayer implements Player {
                     mp.start();
                     state.setText("Playing");
                     state.setColor(Color.GREEN);
-                    getNowPlaying(songName);
                 }
             });
         }
-    }
-
-    private void getNowPlaying(final Label songName) {
-        new Thread(new Runnable() {
-            public void run() {
-                String title = null, djName = null;
-                try {
-                    URL updateURL = new URL("http://radio.nolife-radio.com:9000/stream");
-                    URLConnection conn = updateURL.openConnection();
-                    conn.setRequestProperty("Icy-MetaData", "1");
-                    int interval = Integer.valueOf(conn.getHeaderField("icy-metaint")); // You can get more headers if you wish. There is other useful data.
-
-                    InputStream is = conn.getInputStream();
-
-                    int skipped = 0;
-                    while (skipped < interval) {
-                        skipped += is.skip(interval - skipped);
-                    }
-
-                    int metadataLength = is.read() * 16;
-
-                    int bytesRead = 0;
-                    int offset = 0;
-                    byte[] bytes = new byte[metadataLength];
-
-                    while (bytesRead < metadataLength && bytesRead != -1) {
-                        bytesRead = is.read(bytes, offset, metadataLength);
-                        offset = bytesRead;
-                    }
-
-                    String metaData = new String(bytes).trim();
-                    //parse song name
-                    String song = metaData.substring(metaData.indexOf("=") + 2, metaData.indexOf(";") - 1);
-
-                    //set song name in label
-                    songName.setText(song);
-                    songName.setColor(new Color(50, 205, 50, 0.5f));
-
-                    is.close();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
     }
 }
