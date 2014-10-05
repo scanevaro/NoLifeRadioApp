@@ -290,6 +290,11 @@ public class NoLifeRadio extends ApplicationAdapter {
     }
 
     @Override
+    public void pause() {
+        tracksThread.interrupt();
+    }
+
+    @Override
     public void dispose() {
         tracksThread.interrupt();
     }
