@@ -39,6 +39,21 @@ public class NoLifeRadio extends ApplicationAdapter {
     }
 
     @Override
+    public void resume() {
+        tracksThread.start();
+    }
+
+    @Override
+    public void pause() {
+        tracksThread.interrupt();
+    }
+
+    @Override
+    public void dispose() {
+        tracksThread.interrupt();
+    }
+
+    @Override
     public void create() {
         spriteBatch = new SpriteBatch();
 
@@ -282,20 +297,5 @@ public class NoLifeRadio extends ApplicationAdapter {
         });
 
         tracksThread.start();
-    }
-
-    @Override
-    public void resume() {
-        tracksThread.start();
-    }
-
-    @Override
-    public void pause() {
-        tracksThread.interrupt();
-    }
-
-    @Override
-    public void dispose() {
-        tracksThread.interrupt();
     }
 }
