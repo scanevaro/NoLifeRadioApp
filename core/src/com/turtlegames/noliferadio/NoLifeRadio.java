@@ -30,7 +30,7 @@ public class NoLifeRadio extends ApplicationAdapter {
     private Player player;
     private Label state;
     private Table table;
-
+    private Thread tracksThread;
     private Tree.Node nowPlayingNode;
 
     public NoLifeRadio(Player player) {
@@ -57,6 +57,9 @@ public class NoLifeRadio extends ApplicationAdapter {
             prepareTree();
             prepareDonateButton();
         }
+
+        //TODO add scene2d widgets
+        //TODO set layout
 
         //get track name
         getNowPlaying();
@@ -216,7 +219,7 @@ public class NoLifeRadio extends ApplicationAdapter {
     }
 
     private void getNowPlaying() {
-        new Thread(new Runnable() {
+        tracksThread = new Thread(new Runnable() {
             public void run() {
                 while (true) {
                     try {
@@ -276,6 +279,18 @@ public class NoLifeRadio extends ApplicationAdapter {
                     }
                 }
             }
-        }).start();
+        });
+
+        tracksThread.start();
+    }
+
+    @Override
+    public void resume() {
+        tracksThread.start();
+    }
+
+    @Override
+    public void dispose() {
+        tracksThread.interrupt();
     }
 }
