@@ -25,7 +25,7 @@ import java.net.URLConnection;
 public class NoLifeRadio extends ApplicationAdapter {
     private SpriteBatch spriteBatch;
     private Stage stage;
-    private ImageButton buttonPlay;
+    public ImageButton buttonPlay;
     private Skin skin;
     private Player player;
     private Table table;
@@ -40,7 +40,7 @@ public class NoLifeRadio extends ApplicationAdapter {
 
     @Override
     public void resume() {
-        if (tracksThread != null && !tracksThread.isAlive())
+        if (tracksThread != null && tracksThread.isInterrupted())
             tracksThread.start();
     }
 
@@ -58,7 +58,7 @@ public class NoLifeRadio extends ApplicationAdapter {
     public void create() {
         spriteBatch = new SpriteBatch();
 
-        //prepare UI
+        //prepare UI  d-(^_^)z
         {
             stage = new Stage(new StretchViewport(480, 800));
             skin = new Skin(Gdx.files.internal("data/uiskin.json"));

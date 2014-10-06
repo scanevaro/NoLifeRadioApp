@@ -34,6 +34,8 @@ public class MediaPlayerService extends Service {
         }
 
         if (!mediaPlayer.isPlaying()) {
+            mediaPlayer.stop();
+
             try {
                 mediaPlayer.setDataSource(url);
             } catch (IllegalArgumentException e) {
@@ -61,8 +63,15 @@ public class MediaPlayerService extends Service {
                     state.setColor(Color.GREEN);
                 }
             });
-        } else
+        } else {
             mediaPlayer.stop();
+
+            final Label state = ((NoLifeRadio) Gdx.app.getApplicationListener()).state;
+            state.setText("...IDLE...");
+            state.setColor(Color.WHITE);
+
+            setPlaying(false);
+        }
 
         return START_STICKY;
     }
@@ -78,6 +87,11 @@ public class MediaPlayerService extends Service {
     }
 
     public static boolean isPlaying() {
+        if (playing)
+            ((NoLifeRadio) Gdx.app.getApplicationListener()).buttonPlay.setChecked(true);
+        else
+            ((NoLifeRadio) Gdx.app.getApplicationListener()).buttonPlay.setChecked(false);
+
         return playing;
     }
 
