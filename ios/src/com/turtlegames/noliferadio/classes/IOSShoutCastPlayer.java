@@ -1,7 +1,8 @@
 package com.turtlegames.noliferadio.classes;
 
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.turtlegames.noliferadio.NoLifeRadio;
 import com.turtlegames.noliferadio.interfaces.Player;
 import org.robovm.apple.foundation.NSObject;
 import org.robovm.apple.foundation.NSURL;
@@ -24,8 +25,8 @@ public class IOSShoutCastPlayer implements Player {
     }
 
     @Override
-    public void play(String url, final Label status) {
-        this.status = status;
+    public void play() {
+        this.status = ((NoLifeRadio) Gdx.app.getApplicationListener()).state;
 
         player.setMovieSourceType(MPMovieSourceType.Streaming);
 
@@ -66,6 +67,8 @@ public class IOSShoutCastPlayer implements Player {
                     }
                 });
 
+        String url = "http://radio.nolife-radio.com:9000/stream";
+
         player.setContentURL(new NSURL(url));
 
         player.setShouldAutoplay(true);
@@ -74,5 +77,15 @@ public class IOSShoutCastPlayer implements Player {
 
         //status.setText("Playing");
         //status.setColor(Color.GREEN);
+    }
+
+    @Override
+    public void stop() {
+        player.stop();
+    }
+
+    @Override
+    public boolean isPlaying() {
+        return false;
     }
 }

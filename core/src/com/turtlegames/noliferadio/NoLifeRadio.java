@@ -28,10 +28,10 @@ public class NoLifeRadio extends ApplicationAdapter {
     private ImageButton buttonPlay;
     private Skin skin;
     private Player player;
-    private Label state;
     private Table table;
     private Thread tracksThread;
     private Tree.Node nowPlayingNode;
+    public Label state;
 
     public NoLifeRadio(Player player) {
         if (player != null)
@@ -40,7 +40,8 @@ public class NoLifeRadio extends ApplicationAdapter {
 
     @Override
     public void resume() {
-        tracksThread.start();
+        if (tracksThread != null && !tracksThread.isAlive())
+            tracksThread.start();
     }
 
     @Override
@@ -81,6 +82,15 @@ public class NoLifeRadio extends ApplicationAdapter {
 
         //set Input Processor
         Gdx.input.setInputProcessor(stage);
+
+        if (tracksThread != null && !tracksThread.isAlive())
+            tracksThread.start();
+
+        if (player != null && player.isPlaying()) {
+            buttonPlay.setChecked(true);
+            state.setText("Playing");
+            state.setColor(Color.GREEN);
+        }
     }
 
     @Override
@@ -97,7 +107,7 @@ public class NoLifeRadio extends ApplicationAdapter {
 
             stage.draw();
 
-            table.debug();
+//            table.debug();
 
             spriteBatch.end();
         }
@@ -126,9 +136,7 @@ public class NoLifeRadio extends ApplicationAdapter {
         buttonPlay.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //TODO desktop play not working
-                String url = "http://radio.nolife-radio.com:9000/stream";
-                player.play(url, state);
+                player.play();
             }
         });
 
@@ -192,11 +200,51 @@ public class NoLifeRadio extends ApplicationAdapter {
         final Tree.Node moo4 = new Tree.Node(new Label("In development...", skin));
         chatNode.add(moo4);
 
-        final Tree.Node moo5 = new Tree.Node(new Label("In development...", skin));
-        aboutNode.add(moo5);
+        Table aboutTable = new Table(skin);
+
+        Label about0 = new Label("What the hell is NoLife-radio?\n" +
+                "\n", skin);
+        about0.setColor(new Color(0.2f, 0.8f, 0.2f, 0.8f));
+        about0.setWidth(50);
+        about0.setWrap(true);
+        aboutTable.add(about0).width(400);
+        aboutTable.row();
+
+        Label about1 = new Label("An independent web-radio dedicated to all the lovers of videogames music from the early days till now.\n" +
+                "\n" +
+                "The radio playlist is simply shuffled between single tracks selected by DJ Cookie, foukevin, Dowseman, Syl and perin03.\n" +
+                "\n" +
+                "Special thanks to serial for code, tools and admin. Website design by perin03 and Syl.\n" +
+                "\n" +
+                "All the programs are advertising-free.\n" +
+                "And if you really like what you hear donate using the donation widget! We'd like to add a second server with your donation. More servers = more listeners!\n" +
+                "\n" +
+                "And of course, if you already have a server and want to relay the shoutcast, tell us and we'll add your server to our playlist.\n", skin);
+        about1.setColor(new Color(1.0f, 1.0f, 0.2f, 0.8f));
+        about1.setWidth(50);
+        about1.setWrap(true);
+        aboutTable.add(about1).width(400);
+        aboutTable.row();
+
+        Label about2 = new Label("Legal information\n" +
+                "\n", skin);
+        about2.setColor(new Color(0.2f, 0.8f, 0.2f, 0.8f));
+        about2.setWidth(50);
+        about2.setWrap(true);
+        aboutTable.add(about2).width(400);
+        aboutTable.row();
+
+        Label about3 = new Label("All the songs that you can listen on the NoLife-radio are protected by their author's rights. It is forbidden to use these songs except for a private and personal listening. The use of music material out of the family context is strictly prohibited.", skin);
+        about3.setColor(new Color(1.0f, 1.0f, 0.2f, 0.8f));
+        about3.setWidth(50);
+        about3.setWrap(true);
+        aboutTable.add(about3).width(400);
+        aboutTable.row();
+        final Tree.Node aboutLabelNode = new Tree.Node(aboutTable);
+        aboutNode.add(aboutLabelNode);
 
         Label songName = new Label("", skin);
-        songName.setColor(new Color(50, 205, 50, 0.5f));
+        songName.setColor(new Color(0.2f, 0.8f, 0.2f, 0.8f));
         songName.setWidth(50);
         songName.setWrap(true);
         Table tableTest = new Table(skin);
@@ -215,6 +263,7 @@ public class NoLifeRadio extends ApplicationAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // TODO stop service
+                player.stop();
                 Gdx.app.exit();
             }
         });
@@ -236,7 +285,7 @@ public class NoLifeRadio extends ApplicationAdapter {
     private void getNowPlaying() {
         tracksThread = new Thread(new Runnable() {
             public void run() {
-                while (true) {
+                while (!tracksThread.isInterrupted()) {
                     try {
                         URL updateURL = new URL("http://radio.nolife-radio.com:9000/stream");
                         URLConnection conn = updateURL.openConnection();
@@ -276,7 +325,7 @@ public class NoLifeRadio extends ApplicationAdapter {
                                     nowPlayingNode.getChildren().removeIndex(3).remove();
 
                                 Label newSong = new Label(song, skin);
-                                newSong.setColor(new Color(50, 205, 50, 0.5f));
+                                newSong.setColor(new Color(0.2f, 0.8f, 0.2f, 0.8f));
                                 newSong.setWidth(50);
                                 newSong.setWrap(true);
                                 Table tableNewSong = new Table(skin);

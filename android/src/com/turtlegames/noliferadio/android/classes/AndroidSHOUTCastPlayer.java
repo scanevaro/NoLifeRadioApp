@@ -1,55 +1,31 @@
 package com.turtlegames.noliferadio.android.classes;
 
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import android.content.Context;
+import android.content.Intent;
 import com.turtlegames.noliferadio.interfaces.Player;
-
-import java.io.IOException;
 
 /**
  * Created by scanevaro on 22/08/2014.
  */
 public class AndroidSHOUTCastPlayer implements Player {
-    private MediaPlayer mediaPlayer;
-    private MediaPlayer.TrackInfo[] trackInfo;
+    private Context context;
 
-    public AndroidSHOUTCastPlayer() {
-        mediaPlayer = new MediaPlayer();
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+    public AndroidSHOUTCastPlayer(Context context) {
+        this.context = context;
     }
 
     @Override
-    public void play(String url, final Label state) {
-        if (!mediaPlayer.isPlaying()) {
-            try {
-                mediaPlayer.setDataSource(url);
-            } catch (IllegalArgumentException e) {
-                e.printStackTrace();
-            } catch (IllegalStateException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    public void play() {
+        context.startService(new Intent().setClass(context, MediaPlayerService.class));
+    }
 
-            mediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
-                public void onBufferingUpdate(MediaPlayer mp, int percent) {
-                    state.setText("Buffering..");
-                    state.setColor(Color.YELLOW);
-                }
-            });
+    @Override
+    public void stop() {
+        context.stopService(new Intent().setClass(context, MediaPlayerService.class));
+    }
 
-            mediaPlayer.prepareAsync();
-
-            mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-
-                public void onPrepared(MediaPlayer mp) {
-                    mp.start();
-                    state.setText("Playing");
-                    state.setColor(Color.GREEN);
-                }
-            });
-        }
+    @Override
+    public boolean isPlaying() {
+        return MediaPlayerService.isPlaying();
     }
 }
