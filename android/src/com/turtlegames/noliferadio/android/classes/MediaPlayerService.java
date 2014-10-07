@@ -34,7 +34,7 @@ public class MediaPlayerService extends Service {
         }
 
         if (!mediaPlayer.isPlaying()) {
-            mediaPlayer.stop();
+            mediaPlayer.reset();
 
             try {
                 mediaPlayer.setDataSource(url);

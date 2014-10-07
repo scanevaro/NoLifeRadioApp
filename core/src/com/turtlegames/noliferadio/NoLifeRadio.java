@@ -25,12 +25,12 @@ import java.net.URLConnection;
 public class NoLifeRadio extends ApplicationAdapter {
     private SpriteBatch spriteBatch;
     private Stage stage;
-    public ImageButton buttonPlay;
     private Skin skin;
     private Player player;
     private Table table;
     private Thread tracksThread;
     private Tree.Node nowPlayingNode;
+    public ImageButton buttonPlay;
     public Label state;
 
     public NoLifeRadio(Player player) {
@@ -107,7 +107,8 @@ public class NoLifeRadio extends ApplicationAdapter {
 
             stage.draw();
 
-//            table.debug();
+            // Debug layout
+            // table.debug();
 
             spriteBatch.end();
         }
@@ -155,7 +156,9 @@ public class NoLifeRadio extends ApplicationAdapter {
         //button now playing
         ImageButton.ImageButtonStyle nowPlayingStyle = new ImageButton.ImageButtonStyle(/*skin.get(Button.ButtonStyle.class)*/);
         nowPlayingStyle.imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("data/nowPlaying.png"))));
-        nowPlayingNode = new Tree.Node(new ImageButton(nowPlayingStyle));
+        Table nowPlayingTable = new Table(skin);
+        nowPlayingTable.add(new ImageButton(nowPlayingStyle)).prefSize(100, 40);
+        nowPlayingNode = new Tree.Node(nowPlayingTable);
         nowPlayingNode.setExpanded(true);
         //set listener
         nowPlayingNode.getActor().addListener(new ClickListener() {
@@ -169,7 +172,9 @@ public class NoLifeRadio extends ApplicationAdapter {
 
         ImageButton.ImageButtonStyle chatStyle = new ImageButton.ImageButtonStyle(/*skin.get(Button.ButtonStyle.class)*/);
         chatStyle.imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("data/chat.png"))));
-        final Tree.Node chatNode = new Tree.Node(new ImageButton(chatStyle));
+        Table chatTable = new Table(skin);
+        chatTable.add(new ImageButton(chatStyle)).prefSize(100, 40);
+        final Tree.Node chatNode = new Tree.Node(chatTable);
 
         chatNode.getActor().addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -182,7 +187,9 @@ public class NoLifeRadio extends ApplicationAdapter {
 
         ImageButton.ImageButtonStyle aboutStyle = new ImageButton.ImageButtonStyle(/*skin.get(Button.ButtonStyle.class)*/);
         aboutStyle.imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("data/about.png"))));
-        final Tree.Node aboutNode = new Tree.Node(new ImageButton(aboutStyle));
+        Table aboutTable = new Table(skin);
+        aboutTable.add(new ImageButton(aboutStyle)).prefSize(100, 40);
+        final Tree.Node aboutNode = new Tree.Node(aboutTable);
 
         aboutNode.getActor().addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -200,15 +207,15 @@ public class NoLifeRadio extends ApplicationAdapter {
         final Tree.Node moo4 = new Tree.Node(new Label("In development...", skin));
         chatNode.add(moo4);
 
-        Table aboutTable = new Table(skin);
+        Table aboutLabelTable = new Table(skin);
 
         Label about0 = new Label("What the hell is NoLife-radio?\n" +
                 "\n", skin);
         about0.setColor(new Color(0.2f, 0.8f, 0.2f, 0.8f));
         about0.setWidth(50);
         about0.setWrap(true);
-        aboutTable.add(about0).width(400);
-        aboutTable.row();
+        aboutLabelTable.add(about0).width(400);
+        aboutLabelTable.row();
 
         Label about1 = new Label("An independent web-radio dedicated to all the lovers of videogames music from the early days till now.\n" +
                 "\n" +
@@ -223,27 +230,27 @@ public class NoLifeRadio extends ApplicationAdapter {
         about1.setColor(new Color(1.0f, 1.0f, 0.2f, 0.8f));
         about1.setWidth(50);
         about1.setWrap(true);
-        aboutTable.add(about1).width(400);
-        aboutTable.row();
+        aboutLabelTable.add(about1).width(400);
+        aboutLabelTable.row();
 
         Label about2 = new Label("Legal information\n" +
                 "\n", skin);
         about2.setColor(new Color(0.2f, 0.8f, 0.2f, 0.8f));
         about2.setWidth(50);
         about2.setWrap(true);
-        aboutTable.add(about2).width(400);
-        aboutTable.row();
+        aboutLabelTable.add(about2).width(400);
+        aboutLabelTable.row();
 
         Label about3 = new Label("All the songs that you can listen on the NoLife-radio are protected by their author's rights. It is forbidden to use these songs except for a private and personal listening. The use of music material out of the family context is strictly prohibited.", skin);
         about3.setColor(new Color(1.0f, 1.0f, 0.2f, 0.8f));
         about3.setWidth(50);
         about3.setWrap(true);
-        aboutTable.add(about3).width(400);
-        aboutTable.row();
-        final Tree.Node aboutLabelNode = new Tree.Node(aboutTable);
+        aboutLabelTable.add(about3).width(400);
+        aboutLabelTable.row();
+        final Tree.Node aboutLabelNode = new Tree.Node(aboutLabelTable);
         aboutNode.add(aboutLabelNode);
 
-        Label songName = new Label("", skin);
+        Label songName = new Label("Connecting...", skin);
         songName.setColor(new Color(0.2f, 0.8f, 0.2f, 0.8f));
         songName.setWidth(50);
         songName.setWrap(true);
@@ -318,7 +325,7 @@ public class NoLifeRadio extends ApplicationAdapter {
                         {
                             Table nodeTable = (Table) nowPlayingNode.getChildren().get(0).getActor();
                             Label label = (Label) nodeTable.getCells().get(0).getActor();
-                            if (label.getText().toString().equals(""))
+                            if (label.getText().toString().equals("Connecting..."))
                                 label.setText(song);
                             else if (!label.getText().toString().equals(song)) {
                                 if (nowPlayingNode.getChildren().size == 4)
@@ -339,6 +346,8 @@ public class NoLifeRadio extends ApplicationAdapter {
                     } catch (MalformedURLException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (ArrayIndexOutOfBoundsException e) {
                         e.printStackTrace();
                     }
                 }
