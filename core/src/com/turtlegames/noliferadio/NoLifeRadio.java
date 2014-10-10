@@ -40,8 +40,12 @@ public class NoLifeRadio extends ApplicationAdapter {
 
     @Override
     public void resume() {
-        if (tracksThread != null && tracksThread.isInterrupted())
-            tracksThread.start();
+        try {
+            if (tracksThread != null && tracksThread.isInterrupted())
+                tracksThread.start();
+        } catch (IllegalStateException e) {
+
+        }
     }
 
     @Override
@@ -52,6 +56,9 @@ public class NoLifeRadio extends ApplicationAdapter {
     @Override
     public void dispose() {
         tracksThread.interrupt();
+
+        if (!player.isPlaying())
+            player.stop();
     }
 
     @Override
@@ -80,8 +87,10 @@ public class NoLifeRadio extends ApplicationAdapter {
         //get track name
         getNowPlaying();
 
-        //set Input Processor
+        // set Input Processor
         Gdx.input.setInputProcessor(stage);
+        // catch back key
+        //Gdx.input.setCatchBackKey(true);
 
         if (tracksThread != null && !tracksThread.isAlive())
             tracksThread.start();
@@ -348,6 +357,8 @@ public class NoLifeRadio extends ApplicationAdapter {
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (ArrayIndexOutOfBoundsException e) {
+                        e.printStackTrace();
+                    } catch (NumberFormatException e) {
                         e.printStackTrace();
                     }
                 }
