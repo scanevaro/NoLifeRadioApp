@@ -81,9 +81,6 @@ public class NoLifeRadio extends ApplicationAdapter {
             prepareDonateButton();
         }
 
-        //TODO add scene2d widgets
-        //TODO set layout
-
         //get track name
         getNowPlaying();
 
@@ -117,7 +114,7 @@ public class NoLifeRadio extends ApplicationAdapter {
             stage.draw();
 
             // Debug layout
-            // table.debug();
+//            table.debug();
 
             spriteBatch.end();
         }
@@ -278,7 +275,6 @@ public class NoLifeRadio extends ApplicationAdapter {
         exitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // TODO stop service
                 player.stop();
                 Gdx.app.exit();
             }
