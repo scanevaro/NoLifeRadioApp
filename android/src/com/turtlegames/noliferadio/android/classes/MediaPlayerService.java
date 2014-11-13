@@ -1,6 +1,7 @@
 package com.turtlegames.noliferadio.android.classes;
 
 
+import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -9,6 +10,7 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.PowerManager;
 import com.badlogic.gdx.Gdx;
@@ -128,7 +130,11 @@ public class MediaPlayerService extends Service {
         this.playing = playing;
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void addNotification() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
+            return;
+
         PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0,
                 new Intent(getApplicationContext(), AndroidLauncher.class),
                 PendingIntent.FLAG_UPDATE_CURRENT);
@@ -138,11 +144,6 @@ public class MediaPlayerService extends Service {
                 .setContentIntent(pi)
                 .setSmallIcon(R.drawable.ic_launcher)
                 .build();
-//        notification.tickerText = text;
-//        notification.icon = R.drawable.ic_launcher;
-//        notification.flags |= Notification.FLAG_ONGOING_EVENT;
-//        notification.setLatestEventInfo(getApplicationContext(), "NoLifeRadio",
-//                "Playing", pi);
         startForeground(NOTIFICATION_ID, notification);
     }
 

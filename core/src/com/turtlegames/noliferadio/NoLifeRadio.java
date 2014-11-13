@@ -176,20 +176,20 @@ public class NoLifeRadio extends ApplicationAdapter {
             }
         });
 
-        ImageButton.ImageButtonStyle chatStyle = new ImageButton.ImageButtonStyle(/*skin.get(Button.ButtonStyle.class)*/);
-        chatStyle.imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("data/chat.png"))));
-        Table chatTable = new Table(skin);
-        chatTable.add(new ImageButton(chatStyle)).prefSize(100, 40);
-        final Tree.Node chatNode = new Tree.Node(chatTable);
-
-        chatNode.getActor().addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                if (!chatNode.isExpanded())
-                    chatNode.setExpanded(true);
-                else
-                    chatNode.setExpanded(false);
-            }
-        });
+//        ImageButton.ImageButtonStyle chatStyle = new ImageButton.ImageButtonStyle(/*skin.get(Button.ButtonStyle.class)*/);
+//        chatStyle.imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("data/chat.png"))));
+//        Table chatTable = new Table(skin);
+//        chatTable.add(new ImageButton(chatStyle)).prefSize(100, 40);
+//        final Tree.Node chatNode = new Tree.Node(chatTable);
+//
+//        chatNode.getActor().addListener(new ClickListener() {
+//            public void clicked(InputEvent event, float x, float y) {
+//                if (!chatNode.isExpanded())
+//                    chatNode.setExpanded(true);
+//                else
+//                    chatNode.setExpanded(false);
+//            }
+//        });
 
         ImageButton.ImageButtonStyle aboutStyle = new ImageButton.ImageButtonStyle(/*skin.get(Button.ButtonStyle.class)*/);
         aboutStyle.imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("data/about.png"))));
@@ -207,11 +207,11 @@ public class NoLifeRadio extends ApplicationAdapter {
         });
 
         tree.add(nowPlayingNode);
-        tree.add(chatNode);
+//        tree.add(chatNode);
         tree.add(aboutNode);
 
-        final Tree.Node moo4 = new Tree.Node(new Label("In development...", skin));
-        chatNode.add(moo4);
+//        final Tree.Node moo4 = new Tree.Node(new Label("In development...", skin));
+//        chatNode.add(moo4);
 
         Table aboutLabelTable = new Table(skin);
 
@@ -226,8 +226,6 @@ public class NoLifeRadio extends ApplicationAdapter {
         Label about1 = new Label("An independent web-radio dedicated to all the lovers of videogames music from the early days till now.\n" +
                 "\n" +
                 "The radio playlist is simply shuffled between single tracks selected by DJ Cookie, foukevin, Dowseman, Syl and perin03.\n" +
-                "\n" +
-                "Special thanks to serial for code, tools and admin. Website design by perin03 and Syl.\n" +
                 "\n" +
                 "All the programs are advertising-free.\n" +
                 "And if you really like what you hear donate using the donation widget! We'd like to add a second server with your donation. More servers = more listeners!\n" +
