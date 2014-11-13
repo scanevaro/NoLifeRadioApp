@@ -57,7 +57,7 @@ public class NoLifeRadio extends ApplicationAdapter {
     public void dispose() {
         tracksThread.interrupt();
 
-        if (!player.isPlaying())
+        if (player != null && !player.isPlaying())
             player.stop();
     }
 
